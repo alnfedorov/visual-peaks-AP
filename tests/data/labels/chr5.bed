@@ -1,0 +1,6 @@
+chr5	0   10	peakStart
+chr5	10  80	peaks
+chr5	80  90	peakEnd
+chr5	100 110 peakStart
+chr5	110 180 peaks
+chr5	180 190 peakEnd
