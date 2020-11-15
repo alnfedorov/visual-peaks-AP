@@ -21,7 +21,7 @@ jobs:
     - name: Run checks/test
       run: |
         flake8 --max-line-length 119 .
-        PYTHONPATH=. pytest --cov=visual-peaks-AP
+        PYTHONPATH=. pytest --cov=visual_peaks_AP
     - name: Upload codecov
       uses: codecov/codecov-action@v1
       with:
