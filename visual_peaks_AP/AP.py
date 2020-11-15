@@ -16,7 +16,7 @@ class Interval:
     chrom: str
     start: int
     end: int
-    name: str
+    name: str = "."
     score: Optional[float] = None
 
     def __post_init__(self):
