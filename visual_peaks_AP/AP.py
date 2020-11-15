@@ -57,10 +57,10 @@ class VisualPeak:
         assert self.istart.end == self.ibody.start and self.ibody.end == self.iend.start and \
                self.istart.chrom == self.ibody.chrom == self.iend.chrom and \
                (self.istart.name, self.ibody.name, self.iend.name) == ("peakStart", "peaks", "peakEnd"), \
-            f"Incorrect labels are found, the following intervals were expected to form a visual peak: \n" \
-            f"\tStart: {self.istart}\n" \
-            f"\tBody:  {self.ibody}\n" \
-            f"\tEnd:   {self.iend}\n"
+               f"Incorrect labels are found, the following intervals were expected to form a visual peak: \n" \
+               f"\tStart: {self.istart}\n" \
+               f"\tBody:  {self.ibody}\n" \
+               f"\tEnd:   {self.iend}\n"
 
     @property
     def start(self):
@@ -143,8 +143,7 @@ def parse(peaks: str, labels: str, score_column: int, presorted: bool):
 
         if len(parsed) != 0:
             prev = parsed[-1].interval
-            in_order = prev.chrom < curpeak.chrom or \
-                       prev.chrom == curpeak.chrom and prev.end <= curpeak.start
+            in_order = prev.chrom < curpeak.chrom or prev.chrom == curpeak.chrom and prev.end <= curpeak.start
             if not in_order:
                 logger.error(f"Passed peaks are not sorted: \n"
                              f"prev: {prev}\n"
@@ -223,7 +222,8 @@ def match(peaks: List[PredictedPeak], labels: List[VisualPeak], iouthr: float):
             fp.append(0)
             fn.append(len(labels) - totaltp)
         elif 1 - peak.peaks_fraction - peak.bckg_fraction < iouthr:
-            # Predicted peak might be covered by unlabeled visual peak with the best IOU = 1 - bckg - labeled peaks area
+            # Predicted peak might be covered by unlabeled visual peak with the best IOU
+            # IOU = 1 - bckg - labeled peaks area
             # conservatively assign peak as fp only if there is no way it is covered by the unlabeled data
             tp.append(0)
             fp.append(1)
@@ -256,9 +256,9 @@ def average_precision(peaks: List[PredictedPeak], labels: List[Union[VisualPeak,
     return average_precision
 
 
-def mAP(peaks: List[str], labels: List[str], classes: List[str],
-        iou_thresholds: np.ndarray = DEFAULT_IOU_THRESHOLDS, recall_thresholds: np.ndarray = DEFAULT_RECALL_THRESHOLDS,
-        score_column: int = 4, presorted: bool = False):
+def AP(peaks: List[str], labels: List[str], classes: List[str],
+       iou_thresholds: np.ndarray = DEFAULT_IOU_THRESHOLDS, recall_thresholds: np.ndarray = DEFAULT_RECALL_THRESHOLDS,
+       score_column: int = 4, presorted: bool = False):
     # preprocess the data
     preprocessed = {cls: [] for cls in classes}
     for peaks, labels, cls in zip(peaks, labels, classes):
@@ -308,7 +308,7 @@ if __name__ == '__main__':
     logging.info(f"The following thresholds are used:\n"
                  f"\tRecall:\n{DEFAULT_RECALL_THRESHOLDS}\n"
                  f"\tIOU:\n{DEFAULT_IOU_THRESHOLDS}")
-    mAP(peaks, labels, ["" for _ in peaks], score_column=6)
+    AP(peaks, labels, ["" for _ in peaks], score_column=6)
 
     # macs2 0.599
     # epic2 0.539

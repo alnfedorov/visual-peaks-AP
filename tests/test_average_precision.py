@@ -19,7 +19,8 @@ def assert_ap(labels_file: str, peaks_file: str, AP: float):
 
 def test_average_precision_chr1():
     # 34 * 0.5 / 101 => for iou threshold = 0.5, 34 recall points map to the precision 0.5, the rest are 0.
-    # Average precision is averaged for total recall points(101) and IOU thresholds(here of no use, PRC is the same for every threshold).
+    # Average precision is averaged for total recall points(101) and IOU thresholds
+    # IOU thresholds are not used here, PRC is the same for every threshold).
     assert_ap(
         *getfilenames('chr1'),
         AP=34 * 0.5 / 101
