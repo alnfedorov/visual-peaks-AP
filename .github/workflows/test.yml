@@ -17,8 +17,10 @@ jobs:
 
     - name: Install pytest
       run: |
-        python${{ matrix.python-version }} -m pip install pytest==6.1.2 flake8==3.8.4
+        python${{ matrix.python-version }} -m pip install pytest==6.1.2 flake8==3.8.4 codecov==2.1.10
     - name: Run checks/test
       run: |
         flake8 .
         PYTHONPATH=. pytest
+        codecov --file coverage/lcov.info --disable search
+
