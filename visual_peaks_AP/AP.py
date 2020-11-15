@@ -1,6 +1,5 @@
 import logging
 import os
-from dataclasses import dataclass
 from itertools import chain
 from typing import Tuple, List, Union, Optional
 
@@ -11,16 +10,16 @@ DEFAULT_IOU_THRESHOLDS = np.linspace(.5, 0.95, int(np.round((0.95 - .5) / .05)) 
 DEFAULT_RECALL_THRESHOLDS = np.linspace(.0, 1.00, int(np.round((1.00 - .0) / .01)) + 1, endpoint=True)
 
 
-@dataclass(frozen=True)
 class Interval:
-    chrom: str
-    start: int
-    end: int
-    name: str = "."
-    score: Optional[float] = None
+    __slots__ = ['chrom', 'start', 'end', 'name', 'score']
 
-    def __post_init__(self):
-        assert 0 <= self.start < self.end, f"Incorrect interval: {self}"
+    def __init__(self, chrom: str, start: int, end: int, name: str = ".", score: Optional[float] = None):
+        assert 0 <= start < end, f"Incorrect interval: [{start}, {end})"
+        self.chrom = chrom
+        self.start = start
+        self.end = end
+        self.name = name
+        self.score = score
 
     @staticmethod
     def from_bed_file(path: str, score_column: Optional[int] = None) -> List["Interval"]:
@@ -46,21 +45,28 @@ class Interval:
     def length(self):
         return self.end - self.start
 
+    def __eq__(self, other):
+        return isinstance(other, Interval) and other.chrom == self.chrom and other.start == self.start and \
+               other.end == self.end and other.name == self.name and other.score == self.score
 
-@dataclass(frozen=True)
+    def __hash__(self):
+        return sum(hash(getattr(self, x)) for x in Interval.__slots__)
+
+
 class VisualPeak:
-    istart: Interval
-    ibody: Interval
-    iend: Interval
+    __slots__ = ['istart', 'ibody', 'iend']
 
-    def __post_init__(self):
-        assert self.istart.end == self.ibody.start and self.ibody.end == self.iend.start and \
-               self.istart.chrom == self.ibody.chrom == self.iend.chrom and \
-               (self.istart.name, self.ibody.name, self.iend.name) == ("peakStart", "peaks", "peakEnd"), \
+    def __init__(self, istart: Interval, ibody: Interval, iend: Interval):
+        assert istart.end == ibody.start and ibody.end == iend.start and \
+               istart.chrom == ibody.chrom == iend.chrom and \
+               (istart.name, ibody.name, iend.name) == ("peakStart", "peaks", "peakEnd"), \
                f"Incorrect labels are found, the following intervals were expected to form a visual peak: \n" \
-               f"\tStart: {self.istart}\n" \
-               f"\tBody:  {self.ibody}\n" \
-               f"\tEnd:   {self.iend}\n"
+               f"\tStart: {istart}\n" \
+               f"\tBody:  {ibody}\n" \
+               f"\tEnd:   {iend}\n"
+        self.istart = istart
+        self.ibody = ibody
+        self.iend = iend
 
     @property
     def start(self):
@@ -74,18 +80,38 @@ class VisualPeak:
     def chrom(self):
         return self.istart.chrom
 
+    def __eq__(self, other):
+        return isinstance(other, VisualPeak) and \
+               self.istart == other.istart and \
+               self.ibody == other.ibody and \
+               self.iend == other.iend
 
-@dataclass(frozen=True)
+    def __hash__(self):
+        return hash(self.istart) + hash(self.ibody) + hash(self.iend)
+
+
 class PredictedPeak:
-    iou: Tuple[Tuple[VisualPeak, float], ...]
-    bckg_fraction: float  # noPeaks / peak area
-    peaks_fraction: float  # peakStart+peaks+peakEnd area / peak area
-    interval: Interval
+    __slots__ = ["iou", "bckg_fraction", "peaks_fraction", "interval"]
 
-    def __post_init__(self):
-        assert len(self.iou) > 0 or self.bckg_fraction >= 0
-        if self.iou:
-            assert self.peaks_fraction > 0
+    def __init__(self, iou: Tuple[Tuple[VisualPeak, float], ...], bckg_fraction: float, peaks_fraction: float,
+                 interval: Interval):
+        assert len(iou) > 0 or bckg_fraction >= 0
+        if iou:
+            assert peaks_fraction > 0
+        self.iou = iou
+        self.bckg_fraction = bckg_fraction
+        self.peaks_fraction = peaks_fraction
+        self.interval = interval
+
+    def __eq__(self, other):
+        return isinstance(other, PredictedPeak) and \
+               self.iou == other.iou and \
+               self.bckg_fraction == other.bckg_fraction and \
+               self.peaks_fraction == other.peaks_fraction and \
+               self.interval == other.interval
+
+    def __hash__(self):
+        return hash(self.iou) + hash(self.bckg_fraction) + hash(self.peaks_fraction) + hash(self.interval)
 
 
 def iou(peak: Interval, label: VisualPeak) -> float:
