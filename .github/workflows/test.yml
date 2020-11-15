@@ -17,7 +17,7 @@ jobs:
 
     - name: Install dependencies
       run: |
-        python${{ matrix.python-version }} -m pip install pytest==6.1.2 flake8==3.8.4 numpy==1.17.4 codecov==2.1.10
+        python${{ matrix.python-version }} -m pip install pytest==6.1.2 flake8==3.8.4 numpy==1.17.4
     - name: Run checks/test
       run: |
         flake8 --max-line-length 119 .
