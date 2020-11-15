@@ -1,0 +1,5 @@
+chr4	0	60	noPeaks
+chr4	90	140	noPeaks
+chr4	140 150	peakStart
+chr4	150	230	peaks
+chr4	230	240	peakEnd

@@ -100,9 +100,9 @@ def test_all_chr_parsing(chr1, chr2):
     labels_file, peaks_file = tempfile.mkstemp()[1], tempfile.mkstemp()[1]
 
     labels_stream, peaks_stream = open(labels_file, 'w'), open(peaks_file, 'w')
-    for l, p, (lfile, pfile) in [chr1, chr2]:
-        labels.extend(l)
-        peaks.extend(p)
+    for lbls, pks, (lfile, pfile) in [chr1, chr2]:
+        labels.extend(lbls)
+        peaks.extend(pks)
         for infile, outfile in [(lfile, labels_stream), (pfile, peaks_stream)]:
             with open(infile) as infile:
                 outfile.write(infile.read() + "\n")

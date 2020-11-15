@@ -16,12 +16,3 @@
 
 # IPython Notebook
 .ipynb_checkpoints
-
-# bed files
-cache/
-*.bed
-*.bed.gz
-
-# fasta files
-*.fasta
-
