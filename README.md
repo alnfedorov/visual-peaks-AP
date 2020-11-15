@@ -1,3 +1,4 @@
+[![codecov](https://codecov.io/gh/alnfedorov/visual-peaks-AP/branch/main/graph/badge.svg?token=47L2EP6JBD)](https://codecov.io/gh/alnfedorov/visual-peaks-AP)  
 Refer to the 
 
 ### Installation
