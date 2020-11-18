@@ -54,10 +54,10 @@ class VisualPeak:
         assert istart.end == ibody.start and ibody.end == iend.start and \
                istart.chrom == ibody.chrom == iend.chrom and \
                (istart.name, ibody.name, iend.name) == ("peakStart", "peaks", "peakEnd"), \
-            f"Incorrect labels are found, the following intervals were expected to form a visual peak: \n" \
-            f"\tStart: {istart}\n" \
-            f"\tBody:  {ibody}\n" \
-            f"\tEnd:   {iend}\n"
+               f"Incorrect labels are found, the following intervals were expected to form a visual peak: \n" \
+               f"\tStart: {istart}\n" \
+               f"\tBody:  {ibody}\n" \
+               f"\tEnd:   {iend}\n"
         self.istart = istart
         self.ibody = ibody
         self.iend = iend
