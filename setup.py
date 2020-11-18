@@ -20,5 +20,6 @@ setuptools.setup(
         "Operating System :: POSIX :: Linux",
         "Topic :: Scientific/Engineering"
     ],
+    install_requires=['numpy~=1.11'],
     python_requires='>=3.6',
 )
