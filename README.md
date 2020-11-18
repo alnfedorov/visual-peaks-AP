@@ -1,4 +1,5 @@
-[![codecov](https://codecov.io/gh/alnfedorov/visual-peaks-AP/branch/main/graph/badge.svg?token=47L2EP6JBD)](https://codecov.io/gh/alnfedorov/visual-peaks-AP)  
+[![codecov](https://codecov.io/gh/alnfedorov/visual-peaks-AP/branch/main/graph/badge.svg?token=47L2EP6JBD)](https://codecov.io/gh/alnfedorov/visual-peaks-AP) 
+[![build](https://img.shields.io/github/workflow/status/alnfedorov/visual-peaks-AP/test)](https://github.com/alnfedorov/visual-peaks-AP/actions?query=workflow%3Atest)  
 Refer to the 
 
 ### Installation

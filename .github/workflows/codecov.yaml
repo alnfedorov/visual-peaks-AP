@@ -14,7 +14,6 @@ jobs:
       uses: actions/setup-python@v2
       with:
         python-version: 3.8
-
     - name: Install dependencies
       run: |
         python3.8 -m pip install pytest==6.1.2 flake8==3.8.4 numpy==1.17.4 codecov==2.1.10 pytest-cov==2.10.1
