@@ -1,6 +1,6 @@
 import pytest
 
-from visual_peaks_AP.AP import Interval, VisualPeak, iou
+from visual_peaks_AP.parsing import Interval, VisualPeak, iou
 
 
 @pytest.fixture

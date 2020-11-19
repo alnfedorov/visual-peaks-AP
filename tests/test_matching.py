@@ -1,7 +1,7 @@
 from typing import List
 
 from utils import getfilenames
-from visual_peaks_AP.AP import match, VisualPeak, parse
+from visual_peaks_AP.ap import match, VisualPeak, parse
 
 
 def assert_matching(labels_file: str, peaks_file: str,

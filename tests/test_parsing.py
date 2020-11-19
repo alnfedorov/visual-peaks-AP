@@ -4,7 +4,7 @@ import tempfile
 import pytest
 
 from utils import getfilenames
-from visual_peaks_AP.AP import Interval, VisualPeak, PredictedPeak, parse
+from visual_peaks_AP.ap import Interval, VisualPeak, PredictedPeak, parse
 
 
 # hand-parsed peaks/labels from the data/test_parsing folder

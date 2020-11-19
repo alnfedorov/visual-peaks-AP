@@ -1,7 +1,8 @@
+import os
 import numpy as np
 
 from utils import getfilenames
-from visual_peaks_AP.AP import average_precision, VisualPeak, parse
+from visual_peaks_AP.ap import average_precision, VisualPeak, parse, AP
 
 
 IOU_THRESHOLDS = np.linspace(.5, 0.95, int(np.round((0.95 - .5) / .05)) + 1, endpoint=True)
@@ -102,3 +103,15 @@ def test_average_precision_chr8():
             (34 * 1)
         ) / (101 * 10)
     )
+
+
+def test_AP():
+    eps = 1e-6
+    labels, peaks = [], []
+    for i in range(1, 9):
+        l, p = getfilenames(f'chr{i}')
+        labels.append(l)
+        peaks.append(p)
+
+    expected = 0.16101468842536426
+    assert abs(AP(peaks, labels) - expected) < eps

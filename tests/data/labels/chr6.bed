@@ -1,7 +1,10 @@
 chr6	10  60  peakStart
 chr6	60  90  peaks
 chr6	90  100 peakEnd
+
 chr6	100 140 noPeaks
 chr6	140 170 peakStart
+
 chr6	170 220 peaks
+
 chr6	220 230 peakEnd
