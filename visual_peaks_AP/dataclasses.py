@@ -1,4 +1,4 @@
-from typing import Tuple, List, Optional, Sequence
+from typing import Tuple, Optional, Sequence
 
 
 class Interval:
