@@ -8,8 +8,7 @@ from visual_peaks_AP.ap import Interval, VisualPeak, PredictedPeak, parse
 
 
 # hand-parsed peaks/labels from the data/test_parsing folder
-@pytest.fixture
-def chr1():
+def _chr1():
     labels = [VisualPeak(
         Interval('chr1', 0, 20, 'peakStart'),
         Interval('chr1', 20, 60, 'peaks'),
@@ -42,11 +41,20 @@ def chr1():
         ((lbl1, 10 / 70), (lbl2, 10 / 70)), 30 / 90, 60 / 90, Interval('chr1', 140, 230, '.', 2)
     ))
 
-    return labels, peaks, getfilenames('chr1')
+    return labels, peaks
 
 
 @pytest.fixture
-def chr2():
+def chr1():
+    return (*_chr1(), getfilenames("chr1"))
+
+
+@pytest.fixture
+def chr1_gz():
+    return (*_chr1(), getfilenames("chr1", gz=True))
+
+
+def _chr2():
     lbl = VisualPeak(
         Interval('chr2', 0, 10, 'peakStart'),
         Interval('chr2', 10, 100, 'peaks'),
@@ -83,10 +91,20 @@ def chr2():
         ((lbl, 3 / 5),), 0, 1, Interval('chr2', 270, 300, '.', 6)
     ))
 
-    return labels, peaks, getfilenames('chr2')
+    return labels, peaks
 
 
-@pytest.mark.parametrize('workload', [chr1, chr2])
+@pytest.fixture
+def chr2():
+    return (*_chr2(), getfilenames("chr2"))
+
+
+@pytest.fixture
+def chr2_gz():
+    return (*_chr2(), getfilenames("chr2", gz=True))
+
+
+@pytest.mark.parametrize('workload', [chr1, chr1_gz, chr2, chr2_gz])
 def test_single_chr_parsing(workload, request):
     labels, peaks, (labels_file, peaks_file) = request.getfixturevalue(workload.__name__)
 

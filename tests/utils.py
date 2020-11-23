@@ -1,7 +1,9 @@
 import os
 
 
-def getfilenames(chr: str):
+def getfilenames(chr: str, gz: bool = False):
     file = os.path.abspath(__file__)
     folder = os.path.join(os.path.split(file)[0], "data")
-    return f"{folder}/labels/{chr}.bed", f"{folder}/peaks/{chr}.bed"
+    postfix = "-gz" if gz else ""
+    extension = ".bed.gz" if gz else ".bed"
+    return f"{folder}/labels{postfix}/{chr}{extension}", f"{folder}/peaks{postfix}/{chr}{extension}"

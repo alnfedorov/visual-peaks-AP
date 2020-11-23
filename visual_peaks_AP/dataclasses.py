@@ -12,26 +12,6 @@ class Interval:
         self.name = name
         self.score = score
 
-    @staticmethod
-    def from_bed_file(path: str, score_column: Optional[int] = None) -> List["Interval"]:
-        intervals = []
-        with open(path, 'r') as file:
-            for line in file:
-                line = line.strip().split()
-                if len(line) == 0:
-                    continue
-                if score_column is not None and score_column < len(line):
-                    score = float(line[score_column])
-                else:
-                    score = None
-                try:
-                    new_int = Interval(line[0], int(line[1]), int(line[2]), line[3], score)
-                    intervals.append(new_int)
-                except AssertionError:
-                    print(f"Failed to parse {line}")
-                    continue
-        return intervals
-
     def __repr__(self):
         return f"{self.chrom}\t{self.start}\t{self.end}\t{self.name}\t{self.score}"
 

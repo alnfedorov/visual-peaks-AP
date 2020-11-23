@@ -1,6 +1,7 @@
+import gzip
 import logging
 import os
-from typing import List
+from typing import List, Optional
 
 from .dataclasses import Interval, PredictedPeak, VisualPeak
 
@@ -19,6 +20,35 @@ def iou(peak: Interval, label: VisualPeak) -> float:
     iou = max(0, intersection) / (union - max(0, ignore_start) - max(0, ignore_end))
     assert iou >= 0
     return iou
+
+
+def _parse_intervals(path: str, score_column: Optional[int] = None) -> List[Interval]:
+    intervals = []
+    if path.endswith(".gz"):
+        logger.info(f"gzipped file detected: {path}")
+        stream = gzip.open(path, 'rt', encoding='utf-8')
+    else:
+        logger.info(f"plain text file detected: {path}")
+        stream = open(path, 'r')
+
+    for line in stream:
+        line = line.strip().split()
+        if len(line) == 0:
+            continue
+        if score_column is not None and score_column < len(line):
+            score = float(line[score_column])
+        else:
+            score = None
+        try:
+            new_int = Interval(line[0], int(line[1]), int(line[2]), line[3], score)
+            intervals.append(new_int)
+        except AssertionError:
+            print(f"Failed to parse {line}")
+            continue
+
+    stream.close()
+
+    return intervals
 
 
 def _parse_labels(labels: List[Interval]):
@@ -47,7 +77,7 @@ def parse(peaks: str, labels: str, score_column: int, presorted: bool):
     assert os.path.exists(labels), f"Labels file {labels} is not found"
 
     # load in memory
-    labels, peaks = Interval.from_bed_file(labels, score_column), Interval.from_bed_file(peaks, score_column)
+    labels, peaks = _parse_intervals(labels, score_column), _parse_intervals(peaks, score_column)
 
     if not presorted:
         peaks, labels = sorted(peaks, key=lambda x: x.start), sorted(labels, key=lambda x: x.start)
